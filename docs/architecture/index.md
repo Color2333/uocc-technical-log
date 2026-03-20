@@ -2,40 +2,49 @@
 
 ## 整体组成
 
-```
-                         水下信道（浑浊水体）
-                               ▲
-                               │ 光信号
-                               │
-         ┌─────────────────────┴─────────────────────┐
-         │                  发射端                    │
-         │  ┌─────────┐    ┌─────────┐    ┌───────┐  │
-         │  │ 文字编码 │───►│ OOK     │───►│ RLL   │  │
-         │  │ UTF-8   │    │ 调制    │    │ 编码  │  │
-         │  └─────────┘    └─────────┘    └───────┘  │
-         │                          │                │
-         │                          ▼                │
-         │                   ┌─────────────┐          │
-         │                   │ LED 驱动    │          │
-         │                   │ 10W + 3.3W  │          │
-         │                   └─────────────┘          │
-         └────────────────────────────────────────────┘
-                               │
-                               │ 光
-                               ▼
-         ┌────────────────────────────────────────────┐
-         │                  接收端                      │
-         │  ┌─────────┐    ┌─────────┐    ┌─────────┐  │
-         │  │ 双目    │───►│ 增益    │───►│ OOK    │  │
-         │  │ 相机    │    │ 自适应  │    │ 解调   │  │
-         │  └─────────┘    └─────────┘    └─────────┘  │
-         │                                    │       │
-         │                                    ▼       │
-         │  ┌─────────┐    ┌─────────┐    ┌─────────┐  │
-         │  │ MIMO   │───►│ RLL    │───►│ 文字    │  │
-         │  │ 合并   │    │ 解码   │    │ 输出   │  │
-         │  └─────────┘    └─────────┘    └─────────┘  │
-         └────────────────────────────────────────────┘
+```diagram
+type: arch
+title: 系统架构 — 发射端与接收端
+
+containers:
+  - id: tx
+    label: 发射端
+    children:
+      - utf8: UTF-8 文字编码
+      - ook_tx: OOK 调制
+      - rll: RLL 4B6B
+      - led: LED 驱动 (10W+3.3W)
+      - led_hp: 大功率 LED
+      - led_lp: 低功率 LED
+
+  - id: channel
+    label: 水下信道
+
+  - id: rx
+    label: 接收端
+    children:
+      - camera: 双目相机
+      - adapt: 增益自适应
+      - ook_rx: OOK 解调
+      - mimo: MIMO 合并
+      - rll_dec: RLL 解码
+      - output: 文字输出
+      - jetson: Jetson Orin NX
+
+edges:
+  - utf8 --> ook_tx
+  - ook_tx --> rll
+  - rll --> led
+  - led --> led_hp
+  - led --> led_lp
+  - led_hp --> channel
+  - led_lp --> channel
+  - channel --> camera
+  - camera --> adapt
+  - adapt --> ook_rx
+  - ook_rx --> mimo
+  - mimo --> rll_dec
+  - rll_dec --> output
 ```
 
 ## 子模块
@@ -48,8 +57,32 @@
 
 ## 信号流
 
-```
-文字输入 → UTF-8编码 → OOK调制 → RLL编码 → LED驱动 → 光信号
-                                                          ↓
-光信号 → 相机采集 → OOK解调 → RLL解码 → MIMO合并 → 文字输出
+```diagram
+type: flow
+title: 端到端信号流
+
+nodes:
+  - text_in: 文字输入
+  - utf8: UTF-8 编码
+  - ook_tx: OOK 调制
+  - rll_enc: RLL 编码
+  - led: LED 驱动
+  - light: 光信号
+  - camera: 相机采集
+  - ook_rx: OOK 解调
+  - rll_dec: RLL 解码
+  - mimo: MIMO 合并
+  - text_out: 文字输出
+
+edges:
+  - text_in --> utf8
+  - utf8 --> ook_tx
+  - ook_tx --> rll_enc
+  - rll_enc --> led
+  - led --> light
+  - light --> camera
+  - camera --> ook_rx
+  - ook_rx --> rll_dec
+  - rll_dec --> mimo
+  - mimo --> text_out
 ```
