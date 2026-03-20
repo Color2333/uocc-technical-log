@@ -1,0 +1,78 @@
+{
+  "meta": { "title": "UOCC: 水中光学カメラ通信システム", "description": "水中光学カメラ通信システム设计与实现 卒論知識ネットワーク" },
+  "nav": { "home": "ホーム", "timeline": "タイムライン", "compare": "比較", "layers": "モジュール", "github": "GitHub" },
+  "home": { "hero_title": "UOCC", "hero_subtitle": "水中光学カメラ通信システム设计与实现 — 適応型光学通信 卒論知識ネットワーク", "start": "探索開始", "core_pattern": "システム構成", "core_pattern_desc": "三層適応機構：知覚層 → 算法層 → 実行層 → フィードバック → 知覚層", "learning_path": "学習パス", "learning_path_desc": "12の段階的モジュール、システム概要から実験検証まで", "layers_title": "モジュール分類", "layers_desc": "六つのモジュール分類：概要、アルゴリズム、アーキテクチャ、実験、タイムライン、設計", "loc": "行", "learn_more": "詳細を見る", "versions_in_layer": "モジュール", "message_flow": "信号フロー", "message_flow_desc": "送信端から受信端への光信号の完全なフローを観察" },
+  "version": { "loc": "行のコード", "tools": "モジュール", "new": "新規", "prev": "前章", "next": "次章", "view_source": "設計を見る", "view_diff": "差分を見る", "design_decisions": "設計判断", "whats_new": "新機能", "tutorial": "チュートリアル", "simulator": "アルゴリズムシミュレーション", "execution_flow": "実行フロー", "architecture": "アーキテクチャ", "concept_viz": "コンセプト可視化", "alternatives": "代替案", "tab_learn": "学習", "tab_simulate": "シミュレーション", "tab_code": "コード", "tab_deep_dive": "詳細" },
+  "sim": { "play": "再生", "pause": "一時停止", "step": "ステップ", "reset": "リセット", "speed": "速度", "step_of": "/" },
+  "timeline": { "title": "タイムライン", "subtitle": "卒論進捗追跡", "layer_legend": "モジュール凡例", "loc_growth": "内容成長", "learn_more": "詳細を見る" },
+  "layers": {
+    "title": "モジュール分類",
+    "subtitle": "六つのモジュール分類が完全な卒論知識ネットワークを構成",
+    "overview": "システム概要。背景問題、核心方案、システム構成総覧。",
+    "algorithms": "アルゴリズムモジュール。OOK変調、RLL符号化、適応制御、MIMO合成。",
+    "architecture": "システムアーキテクチャ。送信端、受信端、CUDA加速設計。",
+    "experiments": "実験記録。空気信道、清水信道、濁水信道実験。",
+    "timeline": "進捗追跡。マイルストーン、優先度、次の計画。",
+    "design": "設計進化。LED駆動迭代、アルゴリズム迭代、ハードウェア選定。"
+  },
+  "compare": {
+    "title": "モジュール比較",
+    "subtitle": "任意の2つのモジュール間の変更を確認",
+    "select_a": "モジュールA",
+    "select_b": "モジュールB",
+    "loc_delta": "内容差分",
+    "lines": "行",
+    "new_tools_in_b": "Bの新規",
+    "new_classes_in_b": "Bの新規クラス",
+    "new_functions_in_b": "Bの新規関数",
+    "tool_comparison": "比較",
+    "only_in": "のみ",
+    "shared": "共通",
+    "none": "なし",
+    "source_diff": "設計差分",
+    "empty_hint": "上で2つのモジュールを選択して比較してください。",
+    "architecture": "アーキテクチャ"
+  },
+  "diff": {
+    "new_classes": "新規クラス",
+    "new_tools": "新規",
+    "new_functions": "新規関数",
+    "loc_delta": "内容差分"
+  },
+  "sessions": {
+    "u01": "システム概要",
+    "u02": "OOK 変調復調",
+    "u03": "RLL 符号化",
+    "u04": "適応制御",
+    "u05": "減衰多状態機械",
+    "u06": "MIMO 合成",
+    "u07": "送信端設計",
+    "u08": "受信端設計",
+    "u09": "CUDA 加速",
+    "u10": "実験記録",
+    "u11": "進捗追跡",
+    "u12": "設計進化"
+  },
+  "layer_labels": {
+    "overview": "システム概要",
+    "algorithms": "アルゴリズム",
+    "architecture": "システムアーキテクチャ",
+    "experiments": "実験記録",
+    "timeline": "進捗追跡",
+    "design": "設計進化"
+  },
+  "viz": {
+    "u01": "システム構成",
+    "u02": "OOK 変調",
+    "u03": "RLL 符号化",
+    "u04": "ISO 適応",
+    "u05": "多状態機械",
+    "u06": "MIMO 合成",
+    "u07": "送信端",
+    "u08": "受信端",
+    "u09": "CUDA 加速",
+    "u10": "実験検証",
+    "u11": "進捗管理",
+    "u12": "設計迭代"
+  }
+}

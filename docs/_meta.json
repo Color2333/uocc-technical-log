@@ -1,0 +1,14 @@
+[
+  { "id": "u01", "title": "系统概览", "subtitle": "研究背景与核心问题", "layer": "overview", "doc": "index.md" },
+  { "id": "u02", "title": "OOK 调制解调", "subtitle": "开关键控基础原理", "layer": "algorithms", "doc": "algorithms/ook-modulation.md" },
+  { "id": "u03", "title": "RLL 编码", "subtitle": "4B6B 线路编码", "layer": "algorithms", "doc": "algorithms/rll-encoding.md" },
+  { "id": "u04", "title": "自适应控制", "subtitle": "ISO 增益优化", "layer": "algorithms", "doc": "algorithms/adaptive-iso.md" },
+  { "id": "u05", "title": "阻尼多状态机", "subtitle": "曝光+增益联合控制", "layer": "algorithms", "doc": "algorithms/damped-state-machine.md" },
+  { "id": "u06", "title": "MIMO 合并", "subtitle": "空间分集合并策略", "layer": "algorithms", "doc": "algorithms/mimo-combining.md" },
+  { "id": "u07", "title": "发射端设计", "subtitle": "LED 驱动电路", "layer": "architecture", "doc": "architecture/transmitter.md" },
+  { "id": "u08", "title": "接收端设计", "subtitle": "自适应增益链路", "layer": "architecture", "doc": "architecture/receiver.md" },
+  { "id": "u09", "title": "CUDA 加速", "subtitle": "GPU 并行化解调", "layer": "architecture", "doc": "architecture/cuda-acceleration.md" },
+  { "id": "u10", "title": "实验记录", "subtitle": "空气/清水/浑浊水信道", "layer": "experiments", "doc": "experiments/index.md" },
+  { "id": "u11", "title": "进度追踪", "subtitle": "里程碑与优先级", "layer": "timeline", "doc": "timeline/progress.md" },
+  { "id": "u12", "title": "设计演进", "subtitle": "迭代记录与硬件选型", "layer": "design", "doc": "design/index.md" }
+]
