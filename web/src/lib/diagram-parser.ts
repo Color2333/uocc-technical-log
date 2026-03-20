@@ -1,7 +1,3 @@
-// ============================================================
-// Diagram AST Types
-// ============================================================
-
 export interface DiagramNode {
   id: string;
   label: string;
@@ -33,7 +29,6 @@ export interface DiagramAST {
   nodes: DiagramNode[];
   edges: DiagramEdge[];
   containers?: DiagramContainer[];
-  // For timing diagrams
   signals?: DiagramSignal[];
 }
 
@@ -43,153 +38,116 @@ export interface DiagramSignal {
   periods?: number;
 }
 
-// ============================================================
-// Parser
-// ============================================================
+interface WithConsumed {
+  _consumed?: boolean;
+  _lineIdx?: number;
+}
 
-/**
- * Parses :::diagram block content into a DiagramAST.
- *
- * Syntax:
- * ```yaml
- * type: flow          # diagram type: flow | fsm | arch | timing
- * title: 我的流程图   # optional title
- *
- * nodes:
- *   - id: rx
- *     label: 相机采集
- *   - id: thresh
- *     label: 阈值判决
- *
- * edges:
- *   - from: rx
- *     to: thresh
- *     label: 帧
- * ```
- */
 export function parseDiagram(content: string): DiagramAST {
-  const lines = content.split("\n");
-  const ast: DiagramAST = {
-    type: "flow",
-    nodes: [],
-    edges: [],
-  };
+  const rawLines = content.split("\n");
+  const lines: string[] = [];
+  for (const line of rawLines) {
+    const stripped = line.replace(/^\s{0,4}/, "");
+    if (stripped || lines.length > 0) {
+      lines.push(stripped);
+    }
+  }
 
+  const ast: DiagramAST = { type: "flow", nodes: [], edges: [] };
   let section: "none" | "nodes" | "edges" | "containers" | "signals" = "none";
 
-  for (let i = 0; i < lines.length; i++) {
+  let i = 0;
+  while (i < lines.length) {
     const line = lines[i];
-    const trimmed = line.replace(/^\s{0,4}/, "");
 
-    // Skip empty lines and comments
-    if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("//")) continue;
+    if (!line || line.startsWith("#")) { i++; continue; }
 
-    // Section headers
-    if (trimmed === "nodes:" && section !== "nodes") {
-      section = "nodes";
-      continue;
-    }
-    if (trimmed === "edges:" && section !== "edges") {
-      section = "edges";
-      continue;
-    }
-    if (trimmed === "containers:" && section !== "containers") {
-      section = "containers";
-      continue;
-    }
-    if (trimmed === "signals:" && section !== "signals") {
-      section = "signals";
+    if (line === "nodes:" || line === "edges:" || line === "containers:" || line === "signals:") {
+      section = line.replace(":", "") as typeof section;
+      i++;
       continue;
     }
 
-    // Top-level key-value
-    if (!trimmed.startsWith("-") && trimmed.includes(":")) {
-      const colonIdx = trimmed.indexOf(":");
-      const key = trimmed.slice(0, colonIdx).trim();
-      const value = trimmed.slice(colonIdx + 1).trim().replace(/^['"]|['"]$/g, "");
-
-      if (key === "type") {
-        ast.type = value as DiagramType;
-      } else if (key === "title") {
-        ast.title = value;
-      }
+    if (!line.startsWith("-") && line.includes(":")) {
+      const colonIdx = line.indexOf(":");
+      const key = line.slice(0, colonIdx).trim();
+      const value = line.slice(colonIdx + 1).trim().replace(/^['"]|['"]$/g, "");
+      if (key === "type") ast.type = value as DiagramType;
+      else if (key === "title") ast.title = value;
+      i++;
       continue;
     }
 
-    // List item
-    if (trimmed.startsWith("-")) {
-      const item = trimmed.slice(1).trim();
+    if (line.startsWith("-")) {
+      const item = line.slice(1).trim();
 
-      if (section === "nodes") {
+      const sec = section as string;
+      if (sec === "nodes") {
         const node = parseNodeItem(item, lines, i);
         ast.nodes.push(node);
-        if (node._consumed) i = node._lineIdx!;
-      } else if (section === "edges") {
+        if (node._consumed) i = node._lineIdx! + 1;
+        else i++;
+      } else if (sec === "edges") {
         const edge = parseEdgeItem(item, lines, i);
-        if (edge._consumed) i = edge._lineIdx!;
         ast.edges.push(edge);
-      } else if (section === "containers") {
+        if (edge._consumed) i = edge._lineIdx! + 1;
+        else i++;
+      } else if (sec === "containers") {
         const container = parseContainerItem(item, lines, i, ast.nodes);
-        if (container._consumed) i = container._lineIdx!;
         ast.containers = ast.containers || [];
         ast.containers.push(container);
+        if (container._consumed) i = container._lineIdx! + 1;
+        else i++;
+      } else {
+        i++;
       }
+    } else {
+      i++;
     }
   }
 
   return ast;
 }
 
-interface WithConsumed {
-  _consumed?: boolean;
-  _lineIdx?: number;
-}
-
 function parseNodeItem(item: string, lines: string[], startIdx: number): DiagramNode & WithConsumed {
   const result: DiagramNode & WithConsumed = { id: "", label: "" };
 
-  // Simple compact: "rx: 相机采集" or "rx [label]"
   if (item.includes(":")) {
     const colonIdx = item.indexOf(":");
     result.id = item.slice(0, colonIdx).trim();
     result.label = item.slice(colonIdx + 1).trim();
   } else if (item.startsWith("[")) {
-    // label only (for inline defs)
     result.label = item.replace(/^\[|\]$/g, "");
   } else {
     result.id = item.replace(/^\[|\]$/g, "");
     result.label = result.id;
   }
 
-  // Check if next lines are indented (multiline props)
   let j = startIdx + 1;
   while (j < lines.length) {
     const next = lines[j];
-    if (!next.startsWith("    ") && !next.startsWith("\t") && next.trim()) break;
-    const propLine = next.trim();
-    if (!propLine || propLine.startsWith("#")) { j++; continue; }
-    if (propLine.startsWith("label:")) {
-      result.label = propLine.slice(6).trim().replace(/^['"]|['"]$/g, "");
-    } else if (propLine.startsWith("color:")) {
-      result.color = propLine.slice(6).trim().replace(/^['"]|['"]$/g, "");
-    } else if (propLine.startsWith("style:")) {
-      result.style = propLine.slice(6).trim() as "dashed" | "dotted";
+    const content = next.trim();
+    if (!content) { j++; continue; }
+    if (!next.startsWith("    ") && !next.startsWith("\t")) break;
+
+    if (content.startsWith("label:")) {
+      result.label = content.slice(6).trim().replace(/^['"]|['"]$/g, "");
+    } else if (content.startsWith("color:")) {
+      result.color = content.slice(6).trim().replace(/^['"]|['"]$/g, "");
+    } else if (content.startsWith("style:")) {
+      result.style = content.slice(6).trim() as "dashed" | "dotted";
     }
     j++;
   }
 
-  if (j > startIdx + 1) {
-    result._consumed = true;
-    result._lineIdx = j - 1;
-  }
-
+  result._consumed = j > startIdx + 1;
+  result._lineIdx = j - 1;
   return result;
 }
 
 function parseEdgeItem(item: string, lines: string[], startIdx: number): DiagramEdge & WithConsumed {
   const result: DiagramEdge & WithConsumed = { from: "", to: "" };
 
-  // Compact: "rx --> thresh" or "rx: thresh" or "rx -> thresh"
   const arrowMatch = item.match(/^(\S+?)\s*(?:-->|->|→)\s*(\S+)$/);
   if (arrowMatch) {
     result.from = arrowMatch[1];
@@ -200,28 +158,25 @@ function parseEdgeItem(item: string, lines: string[], startIdx: number): Diagram
     result.to = item.slice(colonIdx + 1).trim();
   }
 
-  // Multiline props
   let j = startIdx + 1;
   while (j < lines.length) {
     const next = lines[j];
-    if (!next.startsWith("    ") && !next.startsWith("\t") && next.trim()) break;
-    const propLine = next.trim();
-    if (!propLine || propLine.startsWith("#")) { j++; continue; }
-    if (propLine.startsWith("label:")) {
-      result.label = propLine.slice(6).trim().replace(/^['"]|['"]$/g, "");
-    } else if (propLine.startsWith("style:")) {
-      result.style = propLine.slice(6).trim() as "dashed" | "dotted";
-    } else if (propLine.startsWith("color:")) {
-      result.color = propLine.slice(6).trim().replace(/^['"]|['"]$/g, "");
+    const content = next.trim();
+    if (!content) { j++; continue; }
+    if (!next.startsWith("    ") && !next.startsWith("\t")) break;
+
+    if (content.startsWith("label:")) {
+      result.label = content.slice(6).trim().replace(/^['"]|['"]$/g, "");
+    } else if (content.startsWith("style:")) {
+      result.style = content.slice(6).trim() as "dashed" | "dotted";
+    } else if (content.startsWith("color:")) {
+      result.color = content.slice(6).trim().replace(/^['"]|['"]$/g, "");
     }
     j++;
   }
 
-  if (j > startIdx + 1) {
-    result._consumed = true;
-    result._lineIdx = j - 1;
-  }
-
+  result._consumed = j > startIdx + 1;
+  result._lineIdx = j - 1;
   return result;
 }
 
@@ -229,28 +184,63 @@ function parseContainerItem(
   item: string,
   lines: string[],
   startIdx: number,
-  allNodes: DiagramNode[]
+  _allNodes: DiagramNode[]
 ): DiagramContainer & WithConsumed {
-  const result: DiagramContainer & WithConsumed = { id: item.replace(/^\[|\]$/g, ""), label: item.replace(/^\[|\]$/g, ""), children: [] };
+  const result: DiagramContainer & WithConsumed = {
+    id: item.replace(/^\[|\]$/g, ""),
+    label: item.replace(/^\[|\]$/g, ""),
+    children: [],
+  };
 
   let j = startIdx + 1;
   while (j < lines.length) {
     const next = lines[j];
-    if (!next.startsWith("    ") && !next.startsWith("\t") && next.trim()) break;
-    const propLine = next.trim();
-    if (!propLine || propLine.startsWith("#")) { j++; continue; }
-    if (propLine.startsWith("label:")) {
-      result.label = propLine.slice(6).trim().replace(/^['"]|['"]$/g, "");
-    } else if (propLine.startsWith("children:")) {
+    const content = next.trim();
+    if (!content) { j++; continue; }
+
+    const leadingSpaces = next.length - next.trimStart().length;
+
+    if (leadingSpaces < 4) break;
+
+    if (content.startsWith("label:")) {
+      result.label = content.slice(6).trim().replace(/^['"]|['"]$/g, "");
+      j++;
+    } else if (content.startsWith("children:")) {
       j++;
       while (j < lines.length) {
-        const childLine = lines[j].trim();
-        if (!childLine || childLine.startsWith("#")) { j++; continue; }
-        if (!childLine.startsWith("-")) break;
-        const childId = childLine.slice(1).trim();
-        const node = allNodes.find((n) => n.id === childId);
-        if (node) result.children.push({ ...node });
-        j++;
+        const childLine = lines[j];
+        const childContent = childLine.trim();
+        const childIndent = childLine.length - childLine.trimStart().length;
+        if (!childContent) { j++; continue; }
+        if (childIndent < 4) break;
+
+        if (childContent.startsWith("-")) {
+          const childItem = childContent.slice(1).trim();
+          const childNode: DiagramNode & WithConsumed = { id: "", label: "" };
+          if (childItem.includes(":")) {
+            const ci = childItem.indexOf(":");
+            childNode.id = childItem.slice(0, ci).trim();
+            childNode.label = childItem.slice(ci + 1).trim();
+          } else {
+            childNode.id = childItem.replace(/^\[|\]$/g, "");
+            childNode.label = childNode.id;
+          }
+          j++;
+          while (j < lines.length) {
+            const contLine = lines[j];
+            const contContent = contLine.trim();
+            const contIndent = contLine.length - contLine.trimStart().length;
+            if (!contContent) { j++; continue; }
+            if (contIndent < 4) break;
+            if (contContent.startsWith("label:")) {
+              childNode.label = contContent.slice(6).trim().replace(/^['"]|['"]$/g, "");
+            }
+            j++;
+          }
+          result.children.push(childNode);
+        } else {
+          j++;
+        }
       }
     } else {
       j++;
