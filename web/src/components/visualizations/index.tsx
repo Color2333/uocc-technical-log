@@ -14,8 +14,8 @@ const visualizations: Record<
   u04: lazy(() => import("./adaptive-iso")),           // Adaptive ISO control
   u05: lazy(() => import("./damped-state-machine")),   // Damped state machine
   u06: lazy(() => import("./mimo-combining")),         // MIMO combining
-  u07: lazy(() => import("./hardware-pipeline")),      // 发射端全链路
-  u08: lazy(() => import("./hardware-pipeline")),      // 接收端全链路（复用）
+  u07: lazy(() => import("./transmitter-circuit")),    // 发射端电路设计（光耦+P-MOS）
+  u08: lazy(() => import("./hardware-pipeline")),      // 接收端全链路
   u09: lazy(() => import("./cuda-acceleration")),    // CUDA 并行加速
   u10: lazy(() => import("./experiment-phases")),    // 实验阶段总览
   u11: lazy(() => import("./progress-tracker")),     // 进度追踪时间线
