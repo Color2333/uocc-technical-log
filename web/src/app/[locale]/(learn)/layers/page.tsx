@@ -118,7 +118,8 @@ export default function LayersPage() {
               {/* Composition indicator */}
               {index < LAYERS.length - 1 && (
                 <div className="flex items-center justify-center py-1 text-zinc-300 dark:text-zinc-700">
-                  <svg width="20" height="12" viewBox="0 0 20 12" fill="none" className="text-current">
+                  <svg width="20" height="12" viewBox="0 0 20 12" fill="none" className="text-current" aria-label="layer connection">
+                    <title>Layer hierarchy connection</title>
                     <path d="M10 0 L10 12 M5 7 L10 12 L15 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>

@@ -174,11 +174,17 @@ export default function HomePage() {
                 <div className="rounded-lg bg-blue-500/20 px-4 py-2 text-sm">UTF-8 编码</div>
                 <span className="text-zinc-500">→</span>
                 <div className="rounded-lg bg-blue-500/20 px-4 py-2 text-sm">OOK 调制</div>
+                <span className="text-zinc-500">→</span>
+                <div className="rounded-lg bg-blue-500/20 px-4 py-2 text-sm">RLL 4B6B 编码</div>
+                <span className="text-zinc-500">→</span>
+                <div className="rounded-lg bg-blue-500/20 px-4 py-2 text-sm">LED 驱动</div>
               </div>
               <div className="flex items-center gap-4">
                 <div className="rounded-lg bg-emerald-500/20 px-4 py-2 text-sm">LED 光信号</div>
                 <span className="text-zinc-500">→</span>
-                <div className="rounded-lg bg-purple-500/20 px-4 py-2 text-sm">相机采集</div>
+                <div className="rounded-lg bg-purple-500/20 px-4 py-2 text-sm">水下信道</div>
+                <span className="text-zinc-500">→</span>
+                <div className="rounded-lg bg-purple-500/20 px-4 py-2 text-sm">双目相机采集</div>
                 <span className="text-zinc-500">→</span>
                 <div className="rounded-lg bg-purple-500/20 px-4 py-2 text-sm">自适应增益</div>
               </div>
@@ -186,6 +192,10 @@ export default function HomePage() {
                 <div className="rounded-lg bg-amber-500/20 px-4 py-2 text-sm">OOK 解调</div>
                 <span className="text-zinc-500">→</span>
                 <div className="rounded-lg bg-amber-500/20 px-4 py-2 text-sm">MIMO 合并</div>
+                <span className="text-zinc-500">→</span>
+                <div className="rounded-lg bg-amber-500/20 px-4 py-2 text-sm">RLL 4B6B 解码</div>
+                <span className="text-zinc-500">→</span>
+                <div className="rounded-lg bg-amber-500/20 px-4 py-2 text-sm">UTF-8 解码</div>
                 <span className="text-zinc-500">→</span>
                 <div className="rounded-lg bg-amber-500/20 px-4 py-2 text-sm">文字输出</div>
               </div>
