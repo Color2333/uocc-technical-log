@@ -13,19 +13,21 @@ import versionData from "@/data/generated/versions.json";
 const data = versionData as VersionIndex;
 
 const LAYER_BORDER_CLASSES: Record<string, string> = {
-  tools: "border-l-blue-500",
-  planning: "border-l-emerald-500",
-  memory: "border-l-purple-500",
-  concurrency: "border-l-amber-500",
-  collaboration: "border-l-red-500",
+  overview: "border-l-blue-500",
+  algorithms: "border-l-emerald-500",
+  architecture: "border-l-purple-500",
+  experiments: "border-l-amber-500",
+  timeline: "border-l-red-500",
+  design: "border-l-pink-500",
 };
 
 const LAYER_HEADER_BG: Record<string, string> = {
-  tools: "bg-blue-500",
-  planning: "bg-emerald-500",
-  memory: "bg-purple-500",
-  concurrency: "bg-amber-500",
-  collaboration: "bg-red-500",
+  overview: "bg-blue-500",
+  algorithms: "bg-emerald-500",
+  architecture: "bg-purple-500",
+  experiments: "bg-amber-500",
+  timeline: "bg-red-500",
+  design: "bg-pink-500",
 };
 
 export default function LayersPage() {
@@ -100,10 +102,6 @@ export default function LayersPage() {
                             size={16}
                             className="mt-1 shrink-0 text-zinc-300 transition-colors group-hover:text-zinc-600 dark:text-zinc-600 dark:group-hover:text-zinc-300"
                           />
-                        </div>
-                        <div className="mt-3 flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400">
-                          <span>{info?.loc ?? "?"} LOC</span>
-                          <span>{info?.tools.length ?? "?"} tools</span>
                         </div>
                         {meta?.keyInsight && (
                           <p className="mt-2 text-xs leading-relaxed text-zinc-500 dark:text-zinc-400 line-clamp-2">
