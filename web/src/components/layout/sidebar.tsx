@@ -7,11 +7,12 @@ import { useTranslations } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const LAYER_DOT_BG: Record<string, string> = {
-  tools: "bg-blue-500",
-  planning: "bg-emerald-500",
-  memory: "bg-purple-500",
-  concurrency: "bg-amber-500",
-  collaboration: "bg-red-500",
+  overview: "bg-blue-500",
+  algorithms: "bg-emerald-500",
+  architecture: "bg-purple-500",
+  experiments: "bg-amber-500",
+  timeline: "bg-red-500",
+  design: "bg-pink-500",
 };
 
 export function Sidebar() {

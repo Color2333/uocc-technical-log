@@ -32,6 +32,7 @@ const LAYER_HEADER_BG: Record<string, string> = {
 
 export default function LayersPage() {
   const t = useTranslations("layers");
+  const tLayer = useTranslations("layer_labels");
   const locale = useLocale();
 
   return (
@@ -87,7 +88,7 @@ export default function LayersPage() {
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2">
                               <span className="text-xs font-mono text-zinc-400">{id}</span>
-                              <LayerBadge layer={layer.id}>{layer.id}</LayerBadge>
+                              <LayerBadge layer={layer.id}>{tLayer(layer.id)}</LayerBadge>
                             </div>
                             <h3 className="mt-1 font-semibold text-zinc-900 dark:text-zinc-100">
                               {meta?.title || id}
