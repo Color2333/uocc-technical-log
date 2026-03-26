@@ -109,8 +109,6 @@ export default function ComparePage() {
                 <p className="text-sm text-zinc-500">{metaA?.subtitle}</p>
               </CardHeader>
               <div className="space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
-                <p>{infoA.loc} LOC</p>
-                <p>{infoA.tools.length} tools</p>
                 {metaA && <LayerBadge layer={metaA.layer}>{metaA.layer}</LayerBadge>}
               </div>
             </Card>
@@ -120,8 +118,6 @@ export default function ComparePage() {
                 <p className="text-sm text-zinc-500">{metaB?.subtitle}</p>
               </CardHeader>
               <div className="space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
-                <p>{infoB.loc} LOC</p>
-                <p>{infoB.tools.length} tools</p>
                 {metaB && <LayerBadge layer={metaB.layer}>{metaB.layer}</LayerBadge>}
               </div>
             </Card>

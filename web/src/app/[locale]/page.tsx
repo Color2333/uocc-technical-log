@@ -221,9 +221,6 @@ export default function HomePage() {
                 >
                   <div className="flex items-start justify-between gap-2">
                     <LayerBadge layer={meta.layer}>{versionId}</LayerBadge>
-                    <span className="text-xs tabular-nums text-[var(--color-text-secondary)]">
-                      {data.loc} {t("loc")}
-                    </span>
                   </div>
                   <h3 className="mt-3 text-sm font-semibold group-hover:underline">
                     {meta.title}
