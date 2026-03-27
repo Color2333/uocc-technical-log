@@ -70,8 +70,8 @@ nodes:
   - light: 光信号
   - camera: 相机采集
   - ook_rx: OOK 解调
-  - rll_dec: RLL 解码
   - mimo: MIMO 合并
+  - rll_dec: RLL 解码
   - text_out: 文字输出
 
 edges:
@@ -82,7 +82,7 @@ edges:
   - led --> light
   - light --> camera
   - camera --> ook_rx
-  - ook_rx --> rll_dec
-  - rll_dec --> mimo
-  - mimo --> text_out
+  - ook_rx --> mimo
+  - mimo --> rll_dec
+  - rll_dec --> text_out
 ```
