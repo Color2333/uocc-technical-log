@@ -12,10 +12,10 @@
 
 | 项目 | 规格 |
 |------|------|
-| **型号** | NVIDIA Jetson Orin NX 8GB |
+| **型号** | NVIDIA Jetson Orin NX 16GB |
 | **GPU** | NVIDIA Ampere架构，1024 CUDA 核心 |
 | **AI 性能** | 34 TOPS (INT8) |
-| **显存** | 8GB LPDDR5 |
+| **显存** | 16GB LPDDR5 |
 | **CUDA 版本** | 11.4+ |
 | **接口** | USB 3.2 × 4, CSI-2 × 4（支持双目相机） |
 | **功耗** | 7.5W - 15W（动态调频） |
