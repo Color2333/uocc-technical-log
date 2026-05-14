@@ -9,6 +9,13 @@
   { "id": "u08", "title": "接收端设计", "subtitle": "自适应增益链路", "layer": "architecture", "doc": "architecture/receiver.md" },
   { "id": "u09", "title": "CUDA 加速", "subtitle": "GPU 并行化解调", "layer": "architecture", "doc": "architecture/cuda-acceleration.md" },
   { "id": "u10", "title": "实验记录", "subtitle": "空气/清水/浑浊水信道", "layer": "experiments", "doc": "experiments/index.md" },
-  { "id": "u11", "title": "进度追踪", "subtitle": "里程碑与优先级", "layer": "timeline", "doc": "timeline/progress.md" },
-  { "id": "u12", "title": "设计演进", "subtitle": "迭代记录与硬件选型", "layer": "design", "doc": "design/index.md" }
+  { "id": "u11", "title": "空气信道实验", "subtitle": "室内基准性能测试", "layer": "experiments", "doc": "experiments/air-channel.md" },
+  { "id": "u12", "title": "清水信道实验", "subtitle": "透明水箱基线验证", "layer": "experiments", "doc": "experiments/clean-water.md" },
+  { "id": "u13", "title": "浑浊水信道实验", "subtitle": "核心创新点验证", "layer": "experiments", "doc": "experiments/turbid-water.md" },
+  { "id": "u14", "title": "3m 水槽实验 SOP", "subtitle": "正式实验流程与论文设计", "layer": "experiments", "doc": "experiments/three-meter-tank-adaptive-sop.md" },
+  { "id": "u15", "title": "进度追踪", "subtitle": "里程碑与优先级", "layer": "timeline", "doc": "timeline/progress.md" },
+  { "id": "u16", "title": "设计演进", "subtitle": "迭代记录与硬件选型", "layer": "design", "doc": "design/index.md" },
+  { "id": "u17", "title": "LED 驱动迭代", "subtitle": "v1-v3 电路演进", "layer": "design", "doc": "design/led-driver-evolution.md" },
+  { "id": "u18", "title": "算法迭代", "subtitle": "固定参数→自适应→MIMO", "layer": "design", "doc": "design/algorithm-iterations.md" },
+  { "id": "u19", "title": "硬件选型", "subtitle": "Jetson Orin NX + 双目相机", "layer": "design", "doc": "design/hardware-choices.md" }
 ]
